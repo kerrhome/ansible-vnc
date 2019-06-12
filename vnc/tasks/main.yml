@@ -1,24 +1,46 @@
 ---
- - name: Install the GUI and VNC Packages
-   apt: pkg={{ item }} state=installed update_cache=true
-   with_items:
-     - xfce4
-     - xfce4-goodies
-     - tightvncserver
-     - expect
-     - firefox
-
- - name: Copy password script
-   template: src=create_password.j2 dest=/home/pass.sh mode=0744
-
- - name: Run password script
-   shell: . /home/pass.sh
-
- - name: Copy the modified "xstartup" file
-   template: src=xstartup.j2 dest=~/.vnc/xstartup mode=0755
-
- - name: Create a file vncserver in /etc/init.d/ directory
-   template: src=vncserver.j2 dest=/etc/init.d/vncserver owner=root group=root mode=0755
-
- - name: Ensure vncserver service is started
-   service: name=vncserver state=restarted enabled=yes
+  - name: Install VNC Server pkgs
+    apt:
+      name: "{{ packages }}"
+      state: present
+      update_cache: yes
+      install_recommends: no
+      autoremove: yes
+      autoclean: yes
+    vars:
+      packages:
+      - expect
+      - lxde
+      - tightvncserver
+ 
+  - name: Copy password script
+    template:
+      src: create_password.j2
+      dest: /home/pass.sh
+      mode: 0744
+ 
+  - name: Run password script
+    shell: . /home/pass.sh
+ 
+  - name: Copy the modified "xstartup" file
+    become_user: {{ user }}
+    copy:
+      src: xstartup.j2
+      dest: ~/.vnc/xstartup
+      backup: yes
+      force: yes
+      mode: 0755
+ 
+  - name: Create a file vncserver in /etc/systemd/system directory
+    copy:
+      src: vncserver.j2
+      dest: /etc/systemd/system/vncserver@.service
+      backup: yes
+      force: yes
+      mode: 0755
+ 
+  - name: Ensure vncserver service is started
+    service:
+      name: vncserver@1
+      state: started
+      enabled: yes
