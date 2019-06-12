@@ -25,7 +25,7 @@
   - name: Copy the modified "xstartup" file
     become_user: {{ user }}
     copy:
-      src: xstartup.j2
+      src: "{{ ansible_distribution }}_xstartup.j2"
       dest: ~/.vnc/xstartup
       backup: yes
       force: yes
