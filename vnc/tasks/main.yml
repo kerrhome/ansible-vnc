@@ -32,11 +32,9 @@
       mode: 0755
  
   - name: Create a file vncserver in /etc/systemd/system directory
-    copy:
+    template:
       src: vncserver.j2
       dest: /etc/systemd/system/vncserver@.service
-      backup: yes
-      force: yes
       mode: 0755
  
   - name: Ensure vncserver service is started
