@@ -1,22 +1,17 @@
-#!/bin/bash
-PATH="$PATH:/usr/bin/"
-DISPLAY="1"
-DEPTH="16"
-GEOMETRY="1024x768"
-OPTIONS="-depth ${DEPTH} -geometry ${GEOMETRY} :${DISPLAY} -localhost"
-. /lib/lsb/init-functions
-case "$1" in
-start)
-log_action_begin_msg "Starting vncserver for user '${USER}' on localhost:${DISPLAY}"
-su ${USER} -c "/usr/bin/vncserver ${OPTIONS}"
-;;
-stop)
-log_action_begin_msg "Stopping vncserver for user '${USER}' on localhost:${DISPLAY}"
-su ${USER} -c "/usr/bin/vncserver -kill :${DISPLAY}"
-;;
-restart)
-$0 stop
-$0 start
-;;
-esac
-exit 0
+[Unit]
+Description=Start TightVNC server at startup
+After=syslog.target network.target
+
+[Service]
+Type=forking
+User={{ user }}
+Group={{ user }}
+WorkingDirectory=/home/{{ user }}
+
+PIDFile=/home/{{ user }}/.vnc/%H:%i.pid
+ExecStartPre=-/usr/bin/vncserver -kill :%i > /dev/null 2>&1
+ExecStart=/usr/bin/vncserver -depth 24 -geometry 1920x1080 :%i
+ExecStop=/usr/bin/vncserver -kill :%i
+
+[Install]
+WantedBy=multi-user.target
