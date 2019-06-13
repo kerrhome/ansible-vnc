@@ -1,0 +1,6 @@
+#!/bin/bash
+xrdb $HOME/.Xresources
+xsetroot -solid grey
+# Fix to make GNOME work
+export XKL_XMODMAP_DISABLE=1
+/etc/X11/Xsession
