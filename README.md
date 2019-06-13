@@ -1,7 +1,7 @@
 Using the playbook:
 =============
 
-Change the password of the vnc server in the vnc/vars/main.yml file
+Change the user and/or password of the vnc server in the vnc/vars/main.yml file
 
 Default host is "vnc-server"
 
