@@ -4,11 +4,11 @@ After=syslog.target network.target
 
 [Service]
 Type=forking
-User={{ user }}
-Group={{ user }}
-WorkingDirectory=/home/{{ user }}
+User={{ default_user }}
+Group={{ default_user }}
+WorkingDirectory=/home/{{ default_user }}
 
-PIDFile=/home/{{ user }}/.vnc/%H:%i.pid
+PIDFile=/home/{{ default_user }}/.vnc/%H:%i.pid
 ExecStartPre=-/usr/bin/vncserver -kill :%i > /dev/null 2>&1
 ExecStart=/usr/bin/vncserver -depth 24 -geometry 1920x1080 :%i
 ExecStop=/usr/bin/vncserver -kill :%i
