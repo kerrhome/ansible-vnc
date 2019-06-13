@@ -17,6 +17,8 @@
     template:
       src: create_password.j2
       dest: /home/pass.sh
+      backup: yes
+      force: yes
       mode: 0744
  
   - name: Run password script
@@ -35,6 +37,8 @@
     template:
       src: vncserver.j2
       dest: /etc/systemd/system/vncserver@.service
+      backup: yes
+      force: yes
       mode: 0755
  
   - name: Ensure vncserver service is started
