@@ -1,0 +1,6 @@
+---
+ 
+  - name: Run password script
+    become: yes
+    become_user: {{ default_user }}
+    shell: . /home/pass.sh
