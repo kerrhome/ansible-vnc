@@ -25,6 +25,7 @@
     shell: . /home/pass.sh
  
   - name: Copy the modified "xstartup" file
+    become: yes
     become_user: {{ default_user }}
     copy:
       src: "{{ ansible_distribution }}_xstartup.j2"
@@ -39,7 +40,7 @@
       dest: /etc/systemd/system/vncserver@.service
       backup: yes
       force: yes
-      mode: 0755
+      mode: 0644
  
   - name: Ensure vncserver service is started
     service:
