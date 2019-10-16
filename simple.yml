@@ -1,6 +1,6 @@
 ---
 
-- hosts: vnc-server
+- hosts: vnc_server
   become: yes
   gather_facts: yes
   tasks:
