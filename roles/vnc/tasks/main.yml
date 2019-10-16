@@ -20,10 +20,8 @@
       backup: yes
       force: yes
       mode: 0744
- 
-  - name: Run password script
-    shell: . /home/pass.sh
- 
+    notify: Run password script
+  
   - name: Copy the modified "xstartup" file
     become: yes
     become_user: {{ default_user }}
